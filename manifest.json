@@ -1,0 +1,42 @@
+{
+  "name": "FontIran",
+  "version": "2.0.0",
+  "manifest_version": 2,
+  "description": "Improve font style for Persian users with premium fonts on fontiran.com;Change the font on Twitter, TweetDeck, Facebook, Instagram, Linkedin, Wikipedia, Telegram web, WhatsApp web, Trello, Google Search, Google+, Google translate, Gmail and other websites;",
+  "icons": {
+    "16": "assets/images/fontiran-16.png",
+    "128": "assets/images/fontiran-128.png"
+  },
+  "background": {
+    "scripts": [
+      "assets/scripts/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "assets/scripts/jquery-3.3.1.min.js",
+        "assets/scripts/contentscript.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "*://*/*"
+  ],
+  "page_action": {
+    "default_icon": {
+      "19": "assets/images/fontiran-19.png",
+      "38": "assets/images/fontiran-48.png"
+    },
+    "default_title": "FontIran",
+    "default_popup": "popup.html"
+  }
+}

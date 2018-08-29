@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="assets/styles/popup.css">
+</head>
+
+<body>
+	<div ng-app="fontIranApp" ng-controller="bodyCtrl" class="d-flex flex-column">
+		<div class="logo">
+			<a href='http://fontiran.com/' target="_blank">
+				<span>
+					<strong>Font</strong>iran.com </span>
+				<small>طراحی و فروشگاه فونت فارسی</small>
+			</a>
+		</div>
+
+		<div class="d-flex flex-column" style="margin-bottom: 20px;">
+			<div class="font d-flex align-items-center">
+				<input id="d_is" type="radio" ng-model="settings.default['font-family']" value="IRANSans" ng-change="update()" />
+				<label class="iran-sans" for="d_is"><img src="assets/images/IranSans.jpg" alt="ایران سنس" /></label>
+			</div>
+			<div class="font d-flex align-items-center">
+				<input id="d_iy" type="radio" ng-model="settings.default['font-family']" value="IRANYekan" ng-change="update()" />
+				<label class="iran-yekan" for="d_iy"><img src="assets/images/IranYekan.jpg" alt="ایران یکان" /></label>
+			</div>
+			<div class="font d-flex align-items-center">
+				<input id="d_isdn" type="radio" ng-model="settings.default['font-family']" value="IRANSansdn" ng-change="update()"				/>
+				<label class="iran-sansdn" for="d_isdn"><img src="assets/images/IranSansDn.jpg" alt="ایران سنس دست‌نویس" /></label>
+			</div>
+			<div class="font d-flex align-items-center">
+				<input id="d_ih" type="radio" ng-model="settings.default['font-family']" value="IRANSharp" ng-change="update()" />
+				<label class="iran-sharp" for="d_ih"><img src="assets/images/IranSharp.jpg" alt="ایران شارپ" /></label>
+			</div>
+		</div>
+
+		<!-- <div>وبسایت دیگری دارید؟ در کادر زیر اضافه کنید: <span style="color: #999">بدون http:// یا https://</span></div>
+		<div class="input-group">
+			<button ng-click="addWebsite()">+</button>
+			<input type="text" ng-model="newSite" placeholder="www.fontiran.com, localhost, ..." />
+			<span>://</span>
+		</div> -->
+		<div>
+			<button id="addCurrent" type="button" ng-click="addWebsite(currentAddress)" ng-show="addCurrentBtnVis">
+				افزودن این وبسایت به لیست
+				<br />
+				{{currentAddress}}
+			</button>
+		</div>
+
+		<div class="setting-tab" ng-repeat="s in settings.websites track by s.id" ng-cloak ng-hide="s.hide">
+			<div class="setting-title" ng-click="expand(s)">
+				<input type="checkbox" ng-model="s.active" ng-change="update()" />
+				<span class="flex-fill">{{s.title || s.urls[0]}}</span>
+				<span ng-click="remove(s, $event)" ng-show="s.deletable">&times;</span>
+			</div>
+			<div class="setting-options" ng-class="{expanded: s.expanded}">
+				<div class="d-flex flex-column">
+					<div class="form-group">
+						<label for="">اندازه نوشته</label>
+						<input type="number" ng-model="s.style['font-size']" min="0.5" max="4" step="0.1" ng-change="update()" />
+					</div>
+					<div class="form-group">
+						<label for="">فاصله خطوط</label>
+						<input type="number" ng-model="s.style['line-height']" min="0.8" max="2" step="0.1" ng-change="update()" />
+					</div>
+				</div>
+				<div class="d-flex flex-column">
+					<div class="font d-flex align-items-center">
+						<input id="s{{s.id}}_def" type="radio" ng-model="s.style['font-family']" value="default" ng-change="update()" />
+						<label style="font-family: {{$parent.settings.default['font-family']}}, IRANSans" for="s{{s.id}}_def">پیشفرض</label>
+					</div>
+					<div class="font d-flex align-items-center">
+						<input id="s{{s.id}}_is" type="radio" ng-model="s.style['font-family']" value="IRANSans" ng-change="update()" />
+						<label class="iran-sans" for="s{{s.id}}_is"><img src="assets/images/IranSans.jpg" alt="ایران سنس" /></label>
+					</div>
+					<div class="font d-flex align-items-center">
+						<input id="s{{s.id}}_iy" type="radio" ng-model="s.style['font-family']" value="IRANYekan" ng-change="update()" />
+						<label class="iran-yekan" for="s{{s.id}}_iy"><img src="assets/images/IranYekan.jpg" alt="ایران یکان" /></label>
+					</div>
+					<div class="font d-flex align-items-center">
+						<input id="s{{s.id}}_isdn" type="radio" ng-model="s.style['font-family']" value="IRANSansDN" ng-change="update()"
+						/>
+						<label class="iran-sansdn" for="s{{s.id}}_isdn"><img src="assets/images/IranSansDn.jpg" alt="ایران سنس دست‌نویس" /></label>
+					</div>
+					<div class="font d-flex align-items-center">
+						<input id="s{{s.id}}_ih" type="radio" ng-model="s.style['font-family']" value="IRANSharp" ng-change="update()" />
+						<label class="iran-sharp" for="s{{s.id}}_ih"><img src="assets/images/IranSharp.jpg" alt="ایران شارپ" /></label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="assets/scripts/jquery-3.3.1.min.js"></script>
+	<script src="assets/scripts/angular.min.js"></script>
+	<script src="assets/scripts/app.js"></script>
+</body>
+
+</html>
