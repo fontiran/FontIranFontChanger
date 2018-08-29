@@ -321,3 +321,9 @@ function settings(_messaging) {
 
   return service;
 }
+
+
+if (navigator.userAgent.indexOf("Firefox") != -1)
+  $('body').addClass('firefox');
+if (navigator.userAgent.indexOf("Chrome") != -1)
+  $('body').addClass('chrome');

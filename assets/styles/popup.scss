@@ -9,6 +9,10 @@ body {
 
 body {
   width: 250px;
+  overflow-x: hidden;
+  &.firefox {
+    padding-left: 20px;
+  }
 }
 
 /*FONTS*/
@@ -23,7 +27,7 @@ body {
 
 .iran-yekan {
   font-family: IRANYekan;
-} 
+}
 
 .iran-sharp {
   font-family: IRANSharp;

@@ -5,7 +5,8 @@ Array.prototype.unique = function () {
   return this.filter(function (value, index, self) {
     return self.indexOf(value) === index;
   });
-}
+};
+
 var done = true, handler, pageMessage, pageStyle = null;
 var selectors = [
   'div',
@@ -41,7 +42,7 @@ function scanElems(next) {
         el.style.setProperty('font-family', `var(--fontIranFont), ${$(el).attr('originalFontFamily')}`, 'important');
         el.style.setProperty('font-size', `calc(var(--fontIranFontSize) * ${$(el).attr('originalFontSize')})`, 'important')
         el.style.setProperty('line-height', 'var(--fontIranLineHeight)', 'important');
-        
+
         $(el).addClass('fontIran');
       }
     }
