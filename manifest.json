@@ -18,10 +18,8 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js": [
-        "assets/scripts/jquery-3.3.1.min.js",
-        "assets/scripts/contentscript.js"
-      ],
+      "js": ["assets/scripts/jquery-3.3.1.min.js","assets/scripts/contentscript.js"],
+      "css": ["assets/styles/font-faces.min.css"],
       "run_at": "document_start",
       "all_frames": true
     }

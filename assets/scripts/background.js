@@ -10,7 +10,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
     tab.url && chrome.pageAction.show(tabId);
 
-    var settings = JSON.parse(localStorage.getItem('fontIranSettings_v2'));
+    var settings = JSON.parse(localStorage.getItem('fontIranSettings'));
     if (settings) {
         var styleSheet = '';
         for (var website of settings.websites) {

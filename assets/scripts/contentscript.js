@@ -5,8 +5,7 @@ Array.prototype.unique = function () {
   return this.filter(function (value, index, self) {
     return self.indexOf(value) === index;
   });
-};
-
+}
 var done = true, handler, pageMessage, pageStyle = null;
 var selectors = [
   'div',
@@ -26,22 +25,17 @@ function scanElems(next) {
   done = false;
   try {
     if (pageMessage.active) {
-      var sels = (() => {
-        if (notIn.length)
-          return notIn.map(ni => selectors.map(x => (not.length) ? not.map(n => `body :not(${ni}) ${x}:not(${n},.fontIran)`).join(',') : `body :not(${ni}) ${x}:not(.fontIran)`).join(',') + ',body').join(',')
-        else
-          return selectors.map((x) => not.length ? not.map(n => `body ${x}:not(${n},.fontIran)`).join(',') : `body ${x}:not(.fontIran)`).join(',') + ',body'
-      })();
+      var notInJoin = notIn.length ? `:not(${notIn.join(',')})` : '';
+      var notJoin = not.length ? `:not(${not.join(',')},.fontIran)` : ':not(.fontIran)';
+      var sels = selectors.map(s => `body ${notInJoin} ${s}${notJoin}`).join(',');
       for (var el of $(sels)) {
         if ($(el).attr('originalStyle') == null) $(el).attr('originalStyle', $(el).attr('style'));
         if ($(el).attr('originalFontFamily') == null) $(el).attr('originalFontFamily', $(el).css('font-family'));
         if ($(el).attr('originalFontSize') == null) $(el).attr('originalFontSize', $(el).css('font-size'));
-        if ($(el).attr('originalLineHeight') == null) $(el).attr('originalLineHeight', $(el).css('line-height'));
       };
       for (var el of $(sels)) {
         el.style.setProperty('font-family', `var(--fontIranFont), ${$(el).attr('originalFontFamily')}`, 'important');
         el.style.setProperty('font-size', `calc(var(--fontIranFontSize) * ${$(el).attr('originalFontSize')})`, 'important')
-        el.style.setProperty('line-height', 'var(--fontIranLineHeight)', 'important');
 
         $(el).addClass('fontIran');
       }
@@ -49,9 +43,7 @@ function scanElems(next) {
     else {
       for (var el of $(selectors.map((x) => `body ${x}.fontIran`).join(',') + ',body')) {
         $(el).css('font-family', $(el).attr('originalFontFamily'))
-
         $(el).css('font-size', $(el).attr('originalFontSize'))
-        $(el).css('line-height', $(el).attr('originalLineHeight'))
         $(el).attr('style', $(el).attr('originalStyle') ? $(el).attr('originalStyle') : '');
         $(el).removeClass('fontIran');
       }

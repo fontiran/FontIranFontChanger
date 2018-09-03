@@ -3,11 +3,9 @@
 app = angular.module('fontIranApp', []);
 
 app.service('_messaging', messaging);
-app.service('_settings', settings);
-app.controller('bodyCtrl', bodyCtrl);
+app.service('_settings', ['_messaging', settings]);
+app.controller('bodyCtrl', ['$scope', '_settings', '_messaging', bodyCtrl]);
 
-
-bodyCtrl.$inject = ['$scope', '_settings', '_messaging'];
 function bodyCtrl($scope, _settings, _messaging) {
   $scope.addCurrentBtnVis = false;
 
@@ -15,21 +13,12 @@ function bodyCtrl($scope, _settings, _messaging) {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
       var splitted = tabs[0].url.split('/')
       var ca = $scope.currentAddress = splitted[0] + '//' + splitted[2] + '/';
-      if (!ca.includes('google.com') &&
-        !ca.includes('twitter.com') &&
-        !ca.includes('wikipedia.org') &&
-        !ca.includes('linkedin.com') &&
-        !ca.includes('telegram.org') &&
-        !ca.includes('instagram.com') &&
-        !ca.includes('facebook.com') &&
-        !ca.includes('trello.com') &&
-        !ca.includes('whatsapp.com') &&
-        callbackSettings.websites.findIndex(w => w.urls.includes(ca+'*')) == -1) {
-          console.log('x', ca + '*')
-          console.log('xx', callbackSettings.websites)
-          console.log('xxx', callbackSettings.websites.findIndex(w => true))
-          $scope.addCurrentBtnVis = true;
-        }
+      if (callbackSettings.websites.findIndex(w => w.urls.includes(ca + '*')) == -1) {
+        console.log('x', ca + '*')
+        console.log('xx', callbackSettings.websites)
+        console.log('xxx', callbackSettings.websites.findIndex(w => true))
+        $scope.addCurrentBtnVis = true;
+      }
       $scope.$apply();
     })
   });
@@ -87,7 +76,7 @@ function messaging() {
   var service = {
     send: function (settings) {
       var toBeRemovedWebsites = [];
-      for (var websiteInd = 0 ; websiteInd < settings.websites.length; websiteInd++) {
+      for (var websiteInd = 0; websiteInd < settings.websites.length; websiteInd++) {
         var website = settings.websites[websiteInd];
         if (website.hide) toBeRemovedWebsites.push(websiteInd);
         (function (active, website, def) {
@@ -124,15 +113,15 @@ function messaging() {
   return service;
 }
 
-settings.$inject = ['_messaging'];
 function settings(_messaging) {
   var service = {
     settings: null,
     init: function (callback) {
-      var settings = JSON.parse(localStorage.getItem('fontIranSettings_v2'));
+
+      var settings = JSON.parse(localStorage.getItem('fontIranSettings'));
       var defaultSettings = {
         default: {
-          'font-family': 'hamcker_IRANSans',
+          'font-family': 'IRANSans',
           'font-size': 1,
           'line-height': 1.7
         },
@@ -146,16 +135,7 @@ function settings(_messaging) {
               'font-family': 'default',
               'line-height': 1.7,
               'font-size': 1
-            }/*,
-            selectors: [
-              '.wf-b #cnt',
-              '.wf-b #cnt .g',
-              '.wf-b #cnt .std',
-              '.wf-b #cnt h1',
-              '.wf-b #cnt input',
-              '.wf-b #cnt select',
-              '.wf-b .g-bbl-container'
-            ]*/
+            }
           }, {
             id: 2,
             title: "Twitter",
@@ -176,7 +156,7 @@ function settings(_messaging) {
               'line-height': 1.7,
               'font-size': 1
             },
-            not : [
+            not: [
               '#gt-tl-gms',
               '#gt-sl-gms',
               '.jfk-button'
@@ -219,8 +199,8 @@ function settings(_messaging) {
               '.zF',
               '.yX.xY'
             ],
-            notIn: [
-              '.cf.An'
+            not: [
+              '.gmail_default'
             ]
           }, {
             id: 5,
@@ -306,22 +286,23 @@ function settings(_messaging) {
         ]
       };
 
-      if (!settings)
-        localStorage.setItem('fontIranSettings_v2', JSON.stringify(defaultSettings));
+      var defaultSettingsString = JSON.stringify(defaultSettings);
 
-      var outlet = JSON.parse(localStorage.getItem('fontIranSettings_v2'));
+      if (!settings)
+        localStorage.setItem('fontIranSettings', defaultSettingsString);
+
+      var outlet = JSON.parse(localStorage.getItem('fontIranSettings'));
       callback && callback(outlet)
       return outlet;
     },
     save: function (settings) {
-      localStorage.setItem('fontIranSettings_v2', JSON.stringify(settings));
+      localStorage.setItem('fontIranSettings', JSON.stringify(settings));
       _messaging.send(settings);
     }
   }
 
   return service;
 }
-
 
 if (navigator.userAgent.indexOf("Firefox") != -1)
   $('body').addClass('firefox');
